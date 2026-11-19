@@ -1089,8 +1089,12 @@ def build():
 
 def main():
     img = build()
-    if os.path.isdir("/output"):
-        out = "/output/entry.png"
+    # The grading pod mounts the repo read-only, so the PNG goes to
+    # the writable directory named by MAKEFUN_OUTPUT_DIR when it is
+    # set; otherwise it lands next to this script (local runs).
+    out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR")
+    if out_dir:
+        out = os.path.join(out_dir, "entry.png")
     else:
         out = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                            "entry.png")
